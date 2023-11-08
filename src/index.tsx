@@ -46,7 +46,7 @@ const IframeTester: React.FC = () => {
             flexGrow: 1,
             padding: 16,
           }}>
-          <Text typography="headingMedium" color="#fff">
+          <Text typography="headingLarge" color="#fff">
             Mobile Iframe Tester
           </Text>
           <Space size={16} />
