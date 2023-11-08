@@ -15,7 +15,7 @@ https://github.com/conexasaude/mobile-iframe-tester/releases
 You just need to:
 
 ```js
-yarn;
+yarn
 ```
 
 and then
