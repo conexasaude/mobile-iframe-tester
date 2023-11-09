@@ -12,12 +12,10 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  View,
+  StyleSheet,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import {ThemeContext} from '../theme';
-
-// import { Container } from './styles';
 
 const http = 'http://';
 const https = 'https://';
@@ -32,20 +30,15 @@ const IframeTester: React.FC = () => {
 
   const {colors} = theme;
 
-  console.log(`${isHttps ? https : http}${iframeUrl}`);
-
   return (
-    <SafeAreaView style={{backgroundColor: '#020217', flexGrow: 1}}>
+    <SafeAreaView style={styles.safeContainer}>
       <KeyboardAvoidingView
-        style={{flex: 1}}
-        contentContainerStyle={{flexGrow: 1}}
+        style={styles.keyboardContainer}
+        contentContainerStyle={styles.keyboardInnerContainer}
         behavior={Platform?.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView
-          style={{flexGrow: 1}}
-          contentContainerStyle={{
-            flexGrow: 1,
-            padding: 16,
-          }}>
+          style={styles.scrollContainer}
+          contentContainerStyle={styles.scrollInnerContainer}>
           <Text typography="headingLarge" color="#fff">
             Mobile Iframe Tester
           </Text>
@@ -96,11 +89,8 @@ const IframeTester: React.FC = () => {
 
           <Space size={16} />
           <Input
-            containerStyle={{borderColor: '#7a7ee5'}}
-            textInputStyles={{
-              color: '#f1f2f3',
-              borderColor: '#7a7ee5',
-            }}
+            containerStyle={styles.inputContainer}
+            textInputStyles={styles.input}
             placeholderTextColor="#b8c9ec"
             placeholder="Input your url here"
             value={inputUrl}
@@ -111,26 +101,26 @@ const IframeTester: React.FC = () => {
 
           <Container
             flex
-            // alignItems="center"
             justifyContent="center"
             backgroundColor="transparent"
-            containerStyles={{
-              borderStyle: 'dashed',
-              borderColor: '#4b5563',
-              borderWidth: 1,
-              borderRadius: 8,
-            }}>
+            borderRadius={8}
+            borderWidth={1}
+            borderColor="#4b5563"
+            containerStyles={styles.container}>
             {render ? (
               <WebView
-                style={{flexGrow: 1}}
-                containerStyle={{
-                  flexGrow: 1,
-                  minHeight: 100,
-                  minWidth: 100,
-                  borderRadius: 8,
-                }}
-                javaScriptEnabled
+                style={styles.webview}
+                containerStyle={styles.webviewInnerContainer}
+                cacheEnabled={false}
+                incognito
+                startInLoadingState
                 allowsInlineMediaPlayback
+                allowsFullscreenVideo
+                domStorageEnabled
+                useWebKit
+                originWhitelist={['*']}
+                mediaPlaybackRequiresUserAction={false}
+                javaScriptEnabled
                 source={{uri: `${isHttps ? https : http}${iframeUrl}`}}
               />
             ) : (
@@ -147,4 +137,23 @@ const IframeTester: React.FC = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  safeContainer: {backgroundColor: '#020217', flexGrow: 1},
+  keyboardContainer: {flex: 1},
+  keyboardInnerContainer: {flexGrow: 1},
+  scrollContainer: {flexGrow: 1},
+  scrollInnerContainer: {flexGrow: 1, padding: 16},
+  inputContainer: {borderColor: '#7a7ee5'},
+  input: {color: '#f1f2f3', borderColor: '#7a7ee5'},
+  container: {borderStyle: 'dashed'},
+  webview: {flexGrow: 1},
+  webviewInnerContainer: {
+    flexGrow: 1,
+    minHeight: 100,
+    minWidth: 100,
+    borderRadius: 8,
+  },
+});
+
 export {IframeTester};
