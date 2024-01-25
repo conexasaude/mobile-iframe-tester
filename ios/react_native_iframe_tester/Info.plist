@@ -51,6 +51,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Utilizamos a câmera do seu dispositivo para possibilitar a participação em consultas on-line.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Utilizamos sua localização pontualmente para otimizar a busca de profissionais no aplicativo.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Utilizamos sua localização pontualmente para otimizar a busca de profissionais no aplicativo.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Utilizamos o microfone do seu dispositivo para possibilitar a participação em consultas on-line.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>NexaText-Black.otf</string>

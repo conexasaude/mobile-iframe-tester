@@ -6,16 +6,19 @@ import {
   Switch,
   Text,
 } from '@conexasaude/hero-app-components';
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  PermissionsAndroid,
 } from 'react-native';
 import WebView from 'react-native-webview';
 import {ThemeContext} from '../theme';
+
+import {request, RESULTS} from 'react-native-permissions';
 
 const http = 'http://';
 const https = 'https://';
@@ -25,6 +28,25 @@ const IframeTester: React.FC = () => {
   const [render, setRender] = useState(false);
   const [inputUrl, setInputUrl] = useState('');
   const [iframeUrl, setIframeUrl] = useState('');
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+      ]);
+    } else {
+      request('ios.permission.CAMERA').then(result => {
+        if (result === RESULTS.GRANTED) {
+          request('ios.permission.MICROPHONE').then(result => {
+            if (result === RESULTS.GRANTED) {
+              // setRender(true);
+            }
+          });
+        }
+      });
+    }
+  }, [Platform]);
 
   const {theme} = useContext(ThemeContext);
 
