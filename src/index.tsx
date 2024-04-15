@@ -19,6 +19,7 @@ import WebView from 'react-native-webview';
 import {ThemeContext} from '../theme';
 
 import {request, RESULTS} from 'react-native-permissions';
+import SafariView from 'react-native-safari-view';
 
 const http = 'http://';
 const https = 'https://';
@@ -47,6 +48,19 @@ const IframeTester: React.FC = () => {
       });
     }
   }, [Platform]);
+
+  useEffect(() => {
+    if (render) {
+      SafariView.isAvailable().then(() => {
+        SafariView.show({
+          url: 'https://qa-paciente.conexasaude.com.br',
+          readerMode: true,
+          tintColor: '#fff',
+          barTintColor: 'red',
+        });
+      });
+    }
+  }, [render]);
 
   const {theme} = useContext(ThemeContext);
 
@@ -103,6 +117,9 @@ const IframeTester: React.FC = () => {
             <Button
               title="Clear"
               onPress={() => {
+                if (Platform.OS === 'ios') {
+                  SafariView.dismiss();
+                }
                 setRender(false);
                 setIframeUrl('');
               }}
@@ -129,7 +146,7 @@ const IframeTester: React.FC = () => {
             borderWidth={1}
             borderColor="#4b5563"
             containerStyles={styles.container}>
-            {render ? (
+            {render && Platform.OS === 'android' ? (
               <WebView
                 style={styles.webview}
                 containerStyle={styles.webviewInnerContainer}
