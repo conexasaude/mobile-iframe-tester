@@ -1,11 +1,3 @@
-import {
-  Button,
-  Container,
-  Input,
-  Space,
-  Switch,
-  Text,
-} from '@conexasaude/hero-app-components';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   KeyboardAvoidingView,
@@ -13,10 +5,14 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Switch,
+  View,
+  Text,
+  Button,
   PermissionsAndroid,
+  TextInput,
 } from 'react-native';
 import WebView from 'react-native-webview';
-import {ThemeContext} from '../theme';
 
 import {request, RESULTS} from 'react-native-permissions';
 import SafariView from 'react-native-safari-view';
@@ -49,23 +45,20 @@ const IframeTester: React.FC = () => {
     }
   }, [Platform]);
 
-  useEffect(() => {
-    if (render) {
-      SafariView.isAvailable().then(() => {
-        SafariView.show({
-          url: 'https://qa-paciente.conexasaude.com.br',
-          readerMode: true,
-          tintColor: '#fff',
-          barTintColor: 'red',
-        });
-      });
-    }
-  }, [render]);
+  // useEffect(() => {
+  //   if (render) {
+  //     // SafariView.isAvailable().then(() => {
+  //     //   SafariView.show({
+  //     //     url: 'https://qa-paciente.conexasaude.com.br',
+  //     //     readerMode: true,
+  //     //     tintColor: '#fff',
+  //     //     barTintColor: 'red',
+  //     //   });
+  //     // });
+  //   }
+  // }, [render]);
 
-  const {theme} = useContext(ThemeContext);
-
-  const {colors} = theme;
-
+  console.log('teste');
   return (
     <SafeAreaView style={styles.safeContainer}>
       <KeyboardAvoidingView
@@ -75,37 +68,25 @@ const IframeTester: React.FC = () => {
         <ScrollView
           style={styles.scrollContainer}
           contentContainerStyle={styles.scrollInnerContainer}>
-          <Text typography="headingLarge" color="#fff">
-            Mobile Iframe Tester
-          </Text>
-          <Space size={16} />
+          <Text>Mobile Iframe Tester</Text>
 
-          <Container
-            flexDirection="row"
-            justifyContent="space-between"
-            backgroundColor="transparent">
-            <Container
-              flexDirection="row"
-              alignItems="center"
-              backgroundColor="transparent">
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
               <Switch value={isHttps} onValueChange={setIsHttps} />
 
-              <Space size={16} />
-
               <Text>
-                <Text
-                  typography="headingMedium"
-                  color={!isHttps ? colors.success[300] : '#ccc'}>
-                  Http
-                </Text>
-                /
-                <Text
-                  color={isHttps ? colors.success[300] : '#ccc'}
-                  typography="headingMedium">
-                  Https
-                </Text>
+                <Text style={{color: !isHttps ? 'green' : '#ccc'}}>Http</Text>/
+                <Text style={{color: isHttps ? 'green' : '#ccc'}}>Https</Text>
               </Text>
-            </Container>
+            </View>
 
             <Button
               title="Render"
@@ -124,29 +105,18 @@ const IframeTester: React.FC = () => {
                 setIframeUrl('');
               }}
             />
-          </Container>
+          </View>
 
-          <Space size={16} />
-          <Input
-            containerStyle={styles.inputContainer}
-            textInputStyles={styles.input}
+          <TextInput
+            style={styles.input}
             placeholderTextColor="#b8c9ec"
             placeholder="Input your url here"
             value={inputUrl}
             onChangeText={setInputUrl}
           />
 
-          <Space size={16} />
-
-          <Container
-            flex
-            justifyContent="center"
-            backgroundColor="transparent"
-            borderRadius={8}
-            borderWidth={1}
-            borderColor="#4b5563"
-            containerStyles={styles.container}>
-            {render && Platform.OS === 'android' ? (
+          <View style={{...styles.container, flex: 1}}>
+            {render ? (
               <WebView
                 style={styles.webview}
                 containerStyle={styles.webviewInnerContainer}
@@ -163,14 +133,9 @@ const IframeTester: React.FC = () => {
                 source={{uri: `${isHttps ? https : http}${iframeUrl}`}}
               />
             ) : (
-              <Text
-                textAlign="center"
-                typography="headingMedium"
-                color="#b7bdf3">
-                Your website will appear here.
-              </Text>
+              <Text>Your website will appear here.</Text>
             )}
-          </Container>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
