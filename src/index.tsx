@@ -45,18 +45,18 @@ const IframeTester: React.FC = () => {
     }
   }, [Platform]);
 
-  // useEffect(() => {
-  //   if (render) {
-  //     // SafariView.isAvailable().then(() => {
-  //     //   SafariView.show({
-  //     //     url: 'https://qa-paciente.conexasaude.com.br',
-  //     //     readerMode: true,
-  //     //     tintColor: '#fff',
-  //     //     barTintColor: 'red',
-  //     //   });
-  //     // });
-  //   }
-  // }, [render]);
+  useEffect(() => {
+    if (render) {
+      SafariView.isAvailable().then(() => {
+        SafariView.show({
+          url: isHttps ? https + inputUrl : http + inputUrl,
+          readerMode: true,
+          tintColor: '#fff',
+          barTintColor: 'red',
+        });
+      });
+    }
+  }, [render]);
 
   console.log('teste');
   return (
@@ -116,7 +116,7 @@ const IframeTester: React.FC = () => {
           />
 
           <View style={{...styles.container, flex: 1}}>
-            {render ? (
+            {render && Platform.OS !== 'ios' ? (
               <WebView
                 style={styles.webview}
                 containerStyle={styles.webviewInnerContainer}
